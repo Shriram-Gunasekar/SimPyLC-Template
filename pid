@@ -1,0 +1,19 @@
+from SimPyLC import *
+
+class PID_Controller(Module):
+    def __init__(self):
+        super().__init__()
+        self.setpoint = AnalogIn()
+        self.input = AnalogIn()
+        self.output = AnalogOut()
+        self.pid = PID(1, 0.1, 0.05)  # PID constants (Kp, Ki, Kd)
+
+        self.connect(self.setpoint, self.pid.setpoint)
+        self.connect(self.input, self.pid.input)
+        self.connect(self.pid.output, self.output)
+
+circuit = PID_Controller()
+circuit.setpoint.value = 50  # Set desired setpoint
+circuit.input.value = 40  # Current input value
+circuit.run()
+print(circuit.output.value)  # PID controller output
